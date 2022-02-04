@@ -1,5 +1,5 @@
 {
-  "name": "meary",
+  "name": "mealry",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -10,8 +10,10 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
+    "@react-native-community/cli": "^7.0.1",
     "react": "17.0.2",
-    "react-native": "0.65.1"
+    "react-native": "0.65.1",
+    "react-native-eject": "^0.1.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
