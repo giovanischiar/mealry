@@ -1,24 +1,52 @@
 import React from 'react';
-import { StyleSheet, View, TouchableOpacity, Alert, Text} from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Alert, Text, FlatList, ListRenderItem, ScrollView, Image} from 'react-native';
 
 import { Meal } from './MealsInterfaces';
 
-export const MealItem = (props: {item: Meal}) => {
-	const { mealWrapper } = styles;
-	const { item } = props;
+export const MealItem = (props: {meal: Meal}) => {
+	const { mealWrapper, date, imageSeparator, description } = styles;
+	const { meal } = props;
 	return (
-		<TouchableOpacity onPress={() => Alert.alert("", "yaay")}>
+		<View>
 			<View style={mealWrapper}>
-				<Text>{item.date}</Text>
-				<Text>{item.image}</Text>
-				<Text>{item.description}</Text>
+				<Text style={date}>{new Date(meal.date).toLocaleString('pt-BR', { hour: 'numeric', minute: 'numeric'})}</Text>
+				<FlatList<string>  
+					data={meal.images}
+					renderItem={imageRenderer}
+					ItemSeparatorComponent={() => <View style={imageSeparator}/>}
+					horizontal
+					showsHorizontalScrollIndicator={false}
+				/>
+				<Text style={description}>{meal.description}</Text>
 			</View>
-		</TouchableOpacity>
+		</View>
 	)
+}
+
+const imageRenderer: ListRenderItem<string> = ({item}) => {
+	return (
+		<View style={{width: 374, height: 248, borderWidth: 1, justifyContent: 'center'}}><Text style={{textAlign: 'center'}}>{item}</Text></View>
+		/*<Image source={{uri: "https://picsum.photos/374/248"}} style={{width: 374, height: 248}}/>*/
+	);
 }
 
 const styles = StyleSheet.create({
 	mealWrapper: {
-		borderWidth: 1
+		
+	},
+
+	date: {
+		textAlign: 'left',
+		marginBottom: 5,
+		marginStart: 30
+	},
+
+	imageSeparator: {
+		width: 15
+	},
+
+	description: {
+		marginStart: 30,
+		marginTop: 15
 	}
 });

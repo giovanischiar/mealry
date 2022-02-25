@@ -1,11 +1,15 @@
 export interface Meal {
 	date: number,
-	image: string,
+	images: string[],
 	description: string
 }
 
+export interface DayMeal {
+	day: number,
+	meals: Meal[]
+}
 
 export interface MealsProps {
-	meals: Meal[];
+	meals: DayMeal[];
 	loadMeals: () => {}
 }

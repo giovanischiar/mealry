@@ -1,14 +1,14 @@
 import { Action as GenericAction } from 'redux';
-import { Meal } from '../meals/MealsInterfaces';
+import { Meal, DayMeal } from '../meals/MealsInterfaces';
 
 export const ACTIONS = {
 	LOAD_MEALS: "LOAD_MEALS"
 }
 
 export interface State {
-	meals: Meal[]
+	dayMeals: DayMeal[]
 }
 
 export interface Action extends GenericAction {
-	payload: Meal[]
+	payload: DayMeal[]
 }
