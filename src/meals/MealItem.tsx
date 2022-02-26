@@ -1,18 +1,31 @@
-import React from 'react';
-import { StyleSheet, View, TouchableOpacity, Alert, Text, FlatList, ListRenderItem, ScrollView, Image} from 'react-native';
+import React, { FunctionComponent } from 'react';
+import { 
+	StyleSheet, 
+	View, 
+	TouchableOpacity, 
+	Alert, 
+	Text, 
+	FlatList, 
+	ListRenderItem, 
+	ScrollView, 
+	Image
+} from 'react-native';
 
 import { Meal } from './MealsInterfaces';
 
-export const MealItem = (props: {meal: Meal}) => {
+export const MealItem = ({meal, collapsed}: {meal: Meal, collapsed: boolean}) => {
+	return !collapsed ? <MealItemUncollapsed meal={meal}/> : <MealItemCollapsed meal={meal}/>
+}
+
+export const MealItemUncollapsed = ({meal}: {meal: Meal}) => {
 	const { mealWrapper, date, imageSeparator, description } = styles;
-	const { meal } = props;
 	return (
 		<View>
 			<View style={mealWrapper}>
-				<Text style={date}>{new Date(meal.date).toLocaleString('pt-BR', { hour: 'numeric', minute: 'numeric'})}</Text>
+				<View style={date}><DateItem>{meal.date.toString()}</DateItem></View>
 				<FlatList<string>  
 					data={meal.images}
-					renderItem={imageRenderer}
+					renderItem={item => <Photo address={item.item} collapsed={false}/>}
 					ItemSeparatorComponent={() => <View style={imageSeparator}/>}
 					horizontal
 					showsHorizontalScrollIndicator={false}
@@ -23,9 +36,37 @@ export const MealItem = (props: {meal: Meal}) => {
 	)
 }
 
-const imageRenderer: ListRenderItem<string> = ({item}) => {
+export const MealItemCollapsed = ({meal}: {meal: Meal}) => {
+	const { resumedDescription } = styles;
 	return (
-		<View style={{width: 374, height: 248, borderWidth: 1, justifyContent: 'center'}}><Text style={{textAlign: 'center'}}>{item}</Text></View>
+		<View>
+			<Text style={{textAlign: 'center'}}><DateItem>{meal.date.toString()}</DateItem></Text>
+			<Photo address={meal.images[0]} collapsed/>
+			<Text style={resumedDescription} numberOfLines={1}>
+				{meal.description}
+			</Text>
+		</View>
+	);
+}
+
+const DateItem : FunctionComponent = ({children}) => {
+	const dateString = children ? children.toString() : "0"
+	const dateNumber = Number(dateString);
+	const convertedDate = new Date(dateNumber);
+	const convertedLocalizedDate = convertedDate.toLocaleString(
+		'pt-BR', 
+		{hour: 'numeric', minute: 'numeric'}
+	);
+	return <Text>{ convertedLocalizedDate }</Text>
+}
+
+const Photo = ({address, collapsed}: {address: string, collapsed: boolean}) => {
+	const width = 374 * (!collapsed ? 1 : 0.25);
+	const height = 248 * (!collapsed ? 1 : 0.25);
+	return (
+		<View style={{width, height, borderWidth: 1, justifyContent: 'center'}}>
+			<Text style={{textAlign: 'center'}}>{address}</Text>
+		</View>
 		/*<Image source={{uri: "https://picsum.photos/374/248"}} style={{width: 374, height: 248}}/>*/
 	);
 }
@@ -38,7 +79,7 @@ const styles = StyleSheet.create({
 	date: {
 		textAlign: 'left',
 		marginBottom: 5,
-		marginStart: 30
+		marginStart: 15
 	},
 
 	imageSeparator: {
@@ -46,7 +87,13 @@ const styles = StyleSheet.create({
 	},
 
 	description: {
-		marginStart: 30,
+		marginStart: 15,
 		marginTop: 15
+	},
+
+	resumedDescription: {
+		margin: 0, 
+		textAlign: 'center', 
+		maxWidth: 374 * 0.25
 	}
 });
