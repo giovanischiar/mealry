@@ -10,7 +10,7 @@ export const Meals = (props: MealsProps) => {
 
 	return (
 		<SafeAreaView style={{flex: 1}}>
-			<TouchableOpacity style={bar} onPress={loadMeals}><Text style={title}>Meals</Text></TouchableOpacity>
+			<TouchableOpacity style={bar} onPress={loadMeals}><Text style={title}>Click here to load the meals</Text></TouchableOpacity>
 			<View style={screen}>	
 				<MealList {...{meals}}/>
 			</View>
@@ -20,12 +20,6 @@ export const Meals = (props: MealsProps) => {
 
 const styles = StyleSheet.create({
 	bar: {
-		height: 81,
-		paddingStart: 15,
-		paddingEnd: 15,
-		justifyContent: 'flex-end',
-		backgroundColor: 'blue',
-		marginTop: -47
 	},
 
 	screen: {
@@ -35,7 +29,7 @@ const styles = StyleSheet.create({
 
 	title: {
 		fontSize: 20,
-		color: 'white',
+		color: 'black',
 		marginBottom: 5,
 	}
 });
