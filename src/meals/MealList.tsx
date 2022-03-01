@@ -28,11 +28,11 @@ const Meal = ({dayMeal}: {dayMeal: DayMeal}) => {
 	)
 }
 
-export const MealList = (props: {meals: DayMeal[]}) => {
+export const MealList = (props: {dayMeals: DayMeal[]}) => {
 	const { separator } = styles;
 	return (
 		<FlatList<DayMeal>
-			data={props.meals}
+			data={props.dayMeals}
 			renderItem={item => <Meal dayMeal={item.item}/>}
 			ItemSeparatorComponent={() => <View style={separator}/>}
 		/>

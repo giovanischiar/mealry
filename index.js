@@ -1,25 +1,15 @@
 import { Navigation } from "react-native-navigation";
-import App from './src/app/App';
-
-App.options = {
-  topBar: {
-    title: {
-      text: 'Meals',
-      color: 'white'
-    },
-    background: {
-      color: '#4d089a'
-    }
-  }
-}
+import App, {AddMealsButton} from './src/app/App';
+import CreateMeal from './src/create_meal/CreateMealContainer';
 
 Navigation.setDefaultOptions({
 	statusBar: {
 		style: 'light'
 	}
 });
-
-Navigation.registerComponent('io.schiar.mealry', () => App);
+Navigation.registerComponent('Meals', () => App);
+Navigation.registerComponent('CreateMeal', () => CreateMeal);
+Navigation.registerComponent('AddMealsButton', () => AddMealsButton);
 Navigation.events().registerAppLaunchedListener(() => {
    Navigation.setRoot({
      root: {
@@ -27,7 +17,8 @@ Navigation.events().registerAppLaunchedListener(() => {
          children: [
            {
              component: {
-               name: 'io.schiar.mealry'
+               id: 'Meals',
+               name: 'Meals'
              },
            }
          ]

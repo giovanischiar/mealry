@@ -10,6 +10,6 @@ export interface DayMeal {
 }
 
 export interface MealsProps {
-	meals: DayMeal[];
+	dayMeals: DayMeal[];
 	loadMeals: () => {}
 }

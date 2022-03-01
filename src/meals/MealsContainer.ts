@@ -8,7 +8,7 @@ import { Meals } from './Meals';
 
 const mapStateToProps = (state: State) => (
 	{
-		meals : state.meals
+		dayMeals : state.dayMeals
 	}
 );
 
