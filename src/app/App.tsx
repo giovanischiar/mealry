@@ -26,11 +26,7 @@ const App = () => {
 const openCreateMeal = async () => {
   const opts = {
     component: {
-      name: 'CreateMeal',
-      options: {
-      animations: {
-        push: { waitForRender: true } }
-      }
+      name: 'CreateMeal'
     }
   }
 
