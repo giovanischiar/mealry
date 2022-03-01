@@ -6,21 +6,13 @@ import {
   Text,
   TouchableOpacity
 } from 'react-native';
-import { Provider } from 'react-redux';
-import { createStore } from 'redux';
 import { Navigation, Layout } from 'react-native-navigation';
 
 import Meals from '../meals/MealsContainer';
 import { rootReducer } from './reducers';
 
-const store = createStore(rootReducer);
-
 const App = () => {
-  return (
-    <Provider {...{store}}>
-      <Meals/>
-    </Provider>
-  );
+  return <Meals/>;
 };
 
 const openCreateMeal = async () => {

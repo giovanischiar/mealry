@@ -64,10 +64,7 @@ const Photo = ({address, collapsed}: {address: string, collapsed: boolean}) => {
 	const width = 374 * (!collapsed ? 1 : 0.25);
 	const height = 248 * (!collapsed ? 1 : 0.25);
 	return (
-		<View style={{width, height, borderWidth: 1, justifyContent: 'center'}}>
-			<Text style={{textAlign: 'center'}}>{address}</Text>
-		</View>
-		/*<Image source={{uri: "https://picsum.photos/374/248"}} style={{width: 374, height: 248}}/>*/
+		<Image source={{uri: address}} style={{width, height}}/>
 	);
 }
 

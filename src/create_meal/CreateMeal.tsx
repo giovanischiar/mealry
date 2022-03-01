@@ -1,33 +1,83 @@
 import React, { useState } from 'react';
-import { StyleSheet, SafeAreaView, View, Text, TextInput, Button, TouchableOpacity, Alert } from 'react-native';
+import { 
+	StyleSheet, 
+	SafeAreaView, 
+	View, 
+	Text, 
+	TextInput, 
+	Button, 
+	TouchableOpacity, 
+	Alert, 
+	Image,
+	FlatList 
+} from 'react-native';
+import { Navigation, Layout } from 'react-native-navigation';
+import { launchImageLibrary } from 'react-native-image-picker';
+import { Meal } from '../meals/MealsInterfaces';
 
-export const CreateMeal = () => {
+export const CreateMeal = (props: {addMeal: (date: number, images: string[], description: string) => {}}) => {
 	const [description, setDescription] = useState('');
-	const { screen, form, descriptionInput, imageInput } = styles;
+	const [images, setImages] = useState([] as string[]);
+	const [date, setDate] = useState("");
+	const { screen, form, descriptionInput, imageInput, imageDimensions } = styles;
 
-	const onSelectImage = () => {
-		Alert.alert('TODO');
+	const onSelectImage = async () => {
+		const result = await launchImageLibrary({mediaType: 'photo', selectionLimit: 0, includeExtra: true});
+		if (result != undefined && result.assets) {
+			const images: string[] = result.assets.flatMap(item => item.uri ? item.uri : '');
+			const dayStamp = result.assets[0].timestamp ? result.assets[0].timestamp : ''
+			setImages(images);
+			setDate(dayStamp);
+		}
+
+		console.log(result);
 	}
 
 	const onSubmit = () => {
-		Alert.alert('TODO', `{description: \"${description}\"}`)
+		props.addMeal(new Date(date).getTime(), images, description)
+		Navigation.popToRoot(props.componentId);
+		//Alert.alert('TODO', `${JSON.stringify(sendingObject)}`);
 	}
 
 	return (
 		<SafeAreaView style={screen}>
 			<View style={form}>
-				<TouchableOpacity onPress={onSelectImage} style={imageInput}>
-					<Text style={{textAlign: 'center'}}>Select Image</Text>
-				</TouchableOpacity>
+				<TextInput 
+					style={[descriptionInput, { alignSelf: 'center' }]}
+					value={date != '' ? new Date(date).toLocaleDateString(): date}
+					placeholder="Day (will be filled automatically by images's date))"
+				/>
+				<View  style={[imageDimensions]}>
+					{ images[0] != undefined ? (
+							<View>
+
+								<FlatList
+									data={images}
+									renderItem={ item => (
+										<View>
+											<Image style={imageDimensions} source={　{uri: item.item}　} />
+										</View>
+									)}
+									horizontal
+								/>
+							</View>
+						): (
+							<TouchableOpacity style={[imageDimensions, imageInput]} onPress={onSelectImage}>
+								<Text style={{textAlign: 'center'}}>Select Image</Text>
+							</TouchableOpacity>
+						)
+					}
+				</View>
 				<TextInput 
 					style={descriptionInput}
+					value={date != '' ? new Date(date).toLocaleTimeString(): date}
 					placeholder="Date and Time (will be filled automatically by images's date))"
 				/>
 				<TextInput 
 					style={descriptionInput}
 					placeholder="Description" 
-					multiline
 					onChangeText={setDescription}
+					multiline
 				/>
 				<Button onPress={onSubmit} title="Done" />
 			</View>
@@ -56,17 +106,21 @@ const styles = StyleSheet.create({
 	form: {
 		margin: 15, 
 		backgroundColor: '#ededed', 
-		padding: 15
+		paddingHorizontal: 15
+	},
+
+	imageDimensions: {
+		width: 374, 
+		height: 248
 	},
 
 	imageInput: {
-		width: 374, 
-		height: 248, 
 		borderWidth: 1, 
 		justifyContent: 'center'
 	},
 
 	descriptionInput: {
-		marginTop: 15
+		marginTop: 15,
+		marginBottom: 15
 	}
 });
