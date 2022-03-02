@@ -36,7 +36,6 @@ export const CreateMeal = (props: {addMeal: (date: number, images: string[], des
 	const onSubmit = () => {
 		props.addMeal(new Date(date).getTime(), images, description)
 		Navigation.popToRoot(props.componentId);
-		//Alert.alert('TODO', `${JSON.stringify(sendingObject)}`);
 	}
 
 	return (
