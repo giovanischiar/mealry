@@ -5,6 +5,9 @@
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/7b57617d13b074a205ab76f1b6fa04ad/transformed/jetified-nativeimagetranscoder-2.5.0/res" />
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/7b57617d13b074a205ab76f1b6fa04ad/transformed/jetified-nativeimagetranscoder-2.5.0/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/7b57617d13b074a205ab76f1b6fa04ad/transformed/jetified-nativeimagetranscoder-2.5.0/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/33637fe982b30551f2ea0c63d0e5e03f/transformed/jetified-nativeimagetranscoder-2.5.0/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/33637fe982b30551f2ea0c63d0e5e03f/transformed/jetified-nativeimagetranscoder-2.5.0/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/33637fe982b30551f2ea0c63d0e5e03f/transformed/jetified-nativeimagetranscoder-2.5.0/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.facebook.fresco/nativeimagetranscoder/2.5.0/3b06032fc7ddb44fc9d2a3e72c2cf8af34fa4e31/nativeimagetranscoder-2.5.0-javadoc.jar!/" />

@@ -5,6 +5,9 @@
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/1760bc315acae76488928b0c5db39dd0/transformed/jetified-soloader-0.10.1/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/1760bc315acae76488928b0c5db39dd0/transformed/jetified-soloader-0.10.1/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/1760bc315acae76488928b0c5db39dd0/transformed/jetified-soloader-0.10.1/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/dda38a8dcc0e27eb4766645a281d5339/transformed/jetified-soloader-0.10.1/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/dda38a8dcc0e27eb4766645a281d5339/transformed/jetified-soloader-0.10.1/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/dda38a8dcc0e27eb4766645a281d5339/transformed/jetified-soloader-0.10.1/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.facebook.soloader/soloader/0.10.1/795b5319325f636800b4ddd8de9c8e35d0dc266d/soloader-0.10.1-javadoc.jar!/" />

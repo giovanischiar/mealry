@@ -5,6 +5,9 @@
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/d280da5958b3d6bc5811db08451730a2/transformed/jetified-memory-type-ashmem-2.5.0/AndroidManifest.xml" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/d280da5958b3d6bc5811db08451730a2/transformed/jetified-memory-type-ashmem-2.5.0/res" />
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/d280da5958b3d6bc5811db08451730a2/transformed/jetified-memory-type-ashmem-2.5.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/c76a2326a5d525ce72be5a49acd06b5e/transformed/jetified-memory-type-ashmem-2.5.0/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/c76a2326a5d525ce72be5a49acd06b5e/transformed/jetified-memory-type-ashmem-2.5.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/c76a2326a5d525ce72be5a49acd06b5e/transformed/jetified-memory-type-ashmem-2.5.0/res" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.facebook.fresco/memory-type-ashmem/2.5.0/c4472e14c3f2865fc972efe4ed9055cf34a53e5e/memory-type-ashmem-2.5.0-javadoc.jar!/" />

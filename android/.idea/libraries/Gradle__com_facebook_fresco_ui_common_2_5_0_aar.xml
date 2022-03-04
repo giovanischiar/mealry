@@ -5,6 +5,9 @@
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/fef5349dc5293bffd2534a7c3e8085e4/transformed/jetified-ui-common-2.5.0/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/fef5349dc5293bffd2534a7c3e8085e4/transformed/jetified-ui-common-2.5.0/AndroidManifest.xml" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/fef5349dc5293bffd2534a7c3e8085e4/transformed/jetified-ui-common-2.5.0/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/c9c5f9700ac3887d4085795f5ed52a17/transformed/jetified-ui-common-2.5.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/c9c5f9700ac3887d4085795f5ed52a17/transformed/jetified-ui-common-2.5.0/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/c9c5f9700ac3887d4085795f5ed52a17/transformed/jetified-ui-common-2.5.0/res" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.facebook.fresco/ui-common/2.5.0/66a5f47db887dae67f6b32117fd90965e6406005/ui-common-2.5.0-javadoc.jar!/" />

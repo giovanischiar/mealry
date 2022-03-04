@@ -4,6 +4,9 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Mealry.iml" filepath="$PROJECT_DIR$/.idea/modules/Mealry.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Mealry.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Mealry.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1153174583/Mealry.react-native-community_datetimepicker.iml" filepath="$PROJECT_DIR$/.idea/modules/-1153174583/Mealry.react-native-community_datetimepicker.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-530425930/Mealry.react-native-image-picker.iml" filepath="$PROJECT_DIR$/.idea/modules/-530425930/Mealry.react-native-image-picker.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/547101330/Mealry.react-native-navigation.iml" filepath="$PROJECT_DIR$/.idea/modules/547101330/Mealry.react-native-navigation.iml" />
     </modules>
   </component>
 </project>
