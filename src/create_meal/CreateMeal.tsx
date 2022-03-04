@@ -9,7 +9,8 @@ import {
 	TouchableOpacity, 
 	Alert, 
 	Image,
-	FlatList 
+	FlatList,
+	Dimensions 
 } from 'react-native';
 import { Navigation, Layout } from 'react-native-navigation';
 import { launchImageLibrary } from 'react-native-image-picker';
@@ -59,12 +60,14 @@ export const CreateMeal = (props: {addMeal: (date: number, images: string[], des
 				<View  style={imageDimensions}>
 					{ images[0] != undefined ? (
 							<View>
-
 								<FlatList
 									data={images}
 									renderItem={ item => (
 										<View>
-											<Image style={imageDimensions} source={　{uri: item.item}　} />
+											<Image 
+												style={imageDimensions} 
+												source={　{uri: item.item}　} 
+											/>
 										</View>
 									)}
 									horizontal
@@ -108,19 +111,19 @@ CreateMeal.options = {
 
 const styles = StyleSheet.create({
 	screen: {
-		flex: 1, 
-		alignItems: 'center'
+		flex: 1
 	},
 
 	form: {
-		margin: 15, 
-		backgroundColor: '#ededed', 
+		margin: 15,
+		backgroundColor: '#ededed',
 		paddingHorizontal: 15
 	},
 
 	imageDimensions: {
-		width: 374, 
-		height: 248
+		width: Dimensions.get('window').width - 60,
+		height: 248,
+    resizeMode: 'contain'
 	},
 
 	imageInput: {
@@ -130,6 +133,7 @@ const styles = StyleSheet.create({
 
 	descriptionInput: {
 		marginTop: 15,
-		marginBottom: 15
+		marginBottom: 15,
+		padding: 0
 	}
 });
