@@ -38,15 +38,25 @@ export const CreateMeal = (props: {addMeal: (date: number, images: string[], des
 		Navigation.popToRoot(props.componentId);
 	}
 
+	const jsCoreDateCreator = (dateString: string): Date => { 
+		const newDateString = dateString.replace('T', ' ');
+	  // dateString *HAS* to be in this format "YYYY-MM-DD HH:MM:SS" 
+	  let dateParam = newDateString.split(/[\s-:]/)  
+	  dateParam[1] = (parseInt(dateParam[1], 10) - 1).toString()  
+	  return new Date(...dateParam)
+	}
+
 	return (
 		<SafeAreaView style={screen}>
 			<View style={form}>
-				<TextInput 
-					style={[descriptionInput, { alignSelf: 'center' }]}
-					value={date != '' ? new Date(date).toLocaleDateString(): date}
-					placeholder="Day (will be filled automatically by images's date))"
-				/>
-				<View  style={[imageDimensions]}>
+				<View style={{alignItems: 'center'}}>
+					<TextInput 
+						style={[descriptionInput, { textAlign: 'center' }]}
+						value={date != '' ? jsCoreDateCreator(date).toLocaleDateString(): date}
+						placeholder="Day (will be filled automatically by images's date))"
+					/>
+				</View>
+				<View  style={imageDimensions}>
 					{ images[0] != undefined ? (
 							<View>
 
@@ -69,8 +79,8 @@ export const CreateMeal = (props: {addMeal: (date: number, images: string[], des
 				</View>
 				<TextInput 
 					style={descriptionInput}
-					value={date != '' ? new Date(date).toLocaleTimeString(): date}
-					placeholder="Date and Time (will be filled automatically by images's date))"
+					value={date != '' ? jsCoreDateCreator(date).toLocaleTimeString(): date}
+					placeholder="Time (will be filled automatically by images's date))"
 				/>
 				<TextInput 
 					style={descriptionInput}
