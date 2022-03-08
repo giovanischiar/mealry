@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
 	StyleSheet, 
 	SafeAreaView, 
@@ -10,17 +10,30 @@ import {
 	Alert, 
 	Image,
 	FlatList,
-	Dimensions 
+	Dimensions,
+	Platform 
 } from 'react-native';
 import { Navigation, Layout } from 'react-native-navigation';
 import { launchImageLibrary } from 'react-native-image-picker';
+import DateTimePicker from '@react-native-community/datetimepicker';
+
+import { DateTimeBadge } from '../components/DateTimeBadge';
 import { Meal } from '../meals/MealsInterfaces';
 
 export const CreateMeal = (props: {addMeal: (date: number, images: string[], description: string) => {}}) => {
+	const [showingDateDicker, isShowingDatePicker] = useState(false);
 	const [description, setDescription] = useState('');
 	const [images, setImages] = useState([] as string[]);
-	const [date, setDate] = useState("");
-	const { screen, form, descriptionInput, imageInput, imageDimensions } = styles;
+	const [date, setDate] = useState(new Date(Date.now()));
+	const { 
+		screen, 
+		form, 
+		descriptionInput, 
+		imageInput, 
+		imageDimensions, 
+		changingImageBtn, 
+		changingImageBtnTxt 
+	} = styles;
 
 	const onSelectImage = async () => {
 		const result = await launchImageLibrary({mediaType: 'photo', selectionLimit: 0, includeExtra: true});
@@ -28,36 +41,61 @@ export const CreateMeal = (props: {addMeal: (date: number, images: string[], des
 			const images: string[] = result.assets.flatMap(item => item.uri ? item.uri : '');
 			const dayStamp = result.assets[0].timestamp ? result.assets[0].timestamp : ''
 			setImages(images);
-			setDate(dayStamp);
+			console.log(new Date(dayStamp));
+			setDate(jsCoreDateCreator(dayStamp));
 		}
 
 		console.log(result);
 	}
 
 	const onSubmit = () => {
-		props.addMeal(new Date(date).getTime(), images, description)
+		console.log('date', date);
+		props.addMeal(date.getTime(), images, description)
 		Navigation.popToRoot(props.componentId);
 	}
 
 	const jsCoreDateCreator = (dateString: string): Date => { 
 		const newDateString = dateString.replace('T', ' ');
 	  // dateString *HAS* to be in this format "YYYY-MM-DD HH:MM:SS" 
-	  let dateParam = newDateString.split(/[\s-:]/)  
+	  let dateParam = newDateString.split (/[\s-:]/)  
 	  dateParam[1] = (parseInt(dateParam[1], 10) - 1).toString()  
 	  return new Date(...dateParam)
+	}
+
+	const onDateChange = (event: any, date: Date | undefined) => {
+		console.log('yay'); 
+		console.log('onChange', event, date); 
+		const newDateString = date ? date.toString() : new Date(Date.now()).toString();
+		setDate(jsCoreDateCreator(newDateString));
+		isShowingDatePicker(false);
 	}
 
 	return (
 		<SafeAreaView style={screen}>
 			<View style={form}>
-				<View style={{alignItems: 'center'}}>
-					<TextInput 
-						style={[descriptionInput, { textAlign: 'center' }]}
-						value={date != '' ? jsCoreDateCreator(date).toLocaleDateString(): date}
-						placeholder="Day (will be filled automatically by images's date))"
-					/>
-				</View>
-				<View  style={imageDimensions}>
+				<View style={{alignSelf: 'center'}}>
+				{ (showingDateDicker || Platform.OS === 'ios') && (
+						<DateTimePicker
+		        	style={[descriptionInput, {minWidth: 150}]}
+		          value={date}
+		          mode={'date'}
+		          display="default"
+		          onChange={onDateChange}
+		        />
+	        )
+				}
+				{ Platform.OS === 'android' && (
+						<DateTimeBadge 
+							style={descriptionInput} 
+							onPress={() => {isShowingDatePicker(!showingDateDicker)}}
+							mode='date'
+						>
+							{ date.getTime() }
+						</DateTimeBadge>
+					)
+				}
+        </View>
+				<View  style={[imageDimensions]}>
 					{ images[0] != undefined ? (
 							<View>
 								<FlatList
@@ -72,6 +110,12 @@ export const CreateMeal = (props: {addMeal: (date: number, images: string[], des
 									)}
 									horizontal
 								/>
+								<TouchableOpacity 
+									onPress={onSelectImage} 
+									style={changingImageBtn}
+								>
+									<Text style={changingImageBtnTxt}>Change image(s)</Text>	
+								</TouchableOpacity>
 							</View>
 						): (
 							<TouchableOpacity style={[imageDimensions, imageInput]} onPress={onSelectImage}>
@@ -80,11 +124,13 @@ export const CreateMeal = (props: {addMeal: (date: number, images: string[], des
 						)
 					}
 				</View>
-				<TextInput 
-					style={descriptionInput}
-					value={date != '' ? jsCoreDateCreator(date).toLocaleTimeString(): date}
-					placeholder="Time (will be filled automatically by images's date))"
-				/>
+{/*        <DateTimePicker
+        	style={[descriptionInput, {minWidth: 65, alignSelf: 'flex-start'}]}
+          value={date}
+          mode={'time'}
+          display="default"
+          onChange={time => {}}
+        />*/}
 				<TextInput 
 					style={descriptionInput}
 					placeholder="Description" 
@@ -134,6 +180,24 @@ const styles = StyleSheet.create({
 	descriptionInput: {
 		marginTop: 15,
 		marginBottom: 15,
-		padding: 0
+		padding: 0,
+		fontSize: 16
+	},
+
+	changingImageBtn: {
+		position: 'absolute', 
+		bottom: 0, 
+		left: 0, 
+		right: 0,
+		height: 30, 
+		justifyContent: 'center', 
+		backgroundColor: 'blue'
+	},
+
+	changingImageBtnTxt: {
+		alignSelf: 'center', 
+		color: 'white',
+		fontWeight: 'bold',
+		fontSize: 16
 	}
 });

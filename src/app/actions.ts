@@ -9,7 +9,7 @@ export const loadMeals = () => {
 export const addMeal = (date: number, images: string[], description: string) => {
 	const dayMeals = store.getState().dayMeals;
 	let newDaymeals = [...dayMeals]
-	const newDayMeal = {day: date, meals: [{date, images, description}]}; //TODO day logic
+	const newDayMeal = {day: date, meals: [{date, images, description}]};
 	let dayAlreadyRegistered = false
 	for (var i = 0; i < dayMeals.length; i++) {
 		if (newDaymeals[i].day.toString().substr(0, 7) === newDayMeal.day.toString().substr(0, 7)) {
@@ -20,5 +20,6 @@ export const addMeal = (date: number, images: string[], description: string) => 
 	if (!dayAlreadyRegistered) {
 		newDaymeals = [...newDaymeals, newDayMeal];
 	}
+	console.log(newDaymeals);
 	return {type: ACTIONS.LOAD_MEALS, payload: newDaymeals};
 }
