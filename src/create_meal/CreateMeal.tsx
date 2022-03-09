@@ -12,12 +12,15 @@ import {
 	FlatList,
 	Dimensions,
 	Platform,
-	NativeModules 
+	NativeModules, 
+	KeyboardAvoidingView,
+	ScrollView
 } from 'react-native';
 import { Navigation, Layout } from 'react-native-navigation';
 import { launchImageLibrary } from 'react-native-image-picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
+import { SURFACE_COLOR, CONTRAST_COLOR } from '../res/theme';
 import { DateTimeBadge } from '../components/DateTimeBadge';
 import { Meal } from '../meals/MealsInterfaces';
 
@@ -35,7 +38,8 @@ export const CreateMeal = (props: {addMeal: (date: number, images: string[], des
 		imageInput, 
 		imageDimensions, 
 		changingImageBtn, 
-		changingImageBtnTxt 
+		changingImageBtnTxt,
+		selectImageTxt 
 	} = styles;
 
 	let iOSLocale = "pt_BR";
@@ -61,7 +65,6 @@ export const CreateMeal = (props: {addMeal: (date: number, images: string[], des
 	}
 
 	const jsCoreDateCreator = (dateString: string): Date => { 
-
 		const newDateString = dateString.replace('T', ' ');
 	  // dateString *HAS* to be in this format "YYYY-MM-DD HH:MM:SS" 
 	  let dateParam = newDateString.split (/[\s-:]/)  
@@ -76,88 +79,90 @@ export const CreateMeal = (props: {addMeal: (date: number, images: string[], des
 	}
 
 	return (
-		<SafeAreaView style={screen}>
-			<View style={form}>
-				<View style={{alignSelf: 'center'}}>
-				{ (showingDatePicker || Platform.OS === 'ios') && (
-						<DateTimePicker
-		        	style={[descriptionInput, {minWidth: 150}]}
-		          value={date}
-		          mode={'date'}
-		          display="default"
-		          onChange={onDateChange}
-		        />
-	        )
-				}
-				{ Platform.OS === 'android' && (
-						<DateTimeBadge 
-							style={descriptionInput} 
-							onPress={() => {isShowingDatePicker(!showingDatePicker)}}
-							mode='date'
-						>
-							{ date.getTime() }
-						</DateTimeBadge>
-					)
-				}
-        </View>
-				<View  style={[imageDimensions]}>
-					{ images[0] != undefined ? (
-							<View>
-								<FlatList
-									data={images}
-									renderItem={ item => (
+			<KeyboardAvoidingView style={{flex: 1}} behavior={Platform.OS === "ios" ? "padding" : null}>
+				<SafeAreaView style={screen}>
+					<View style={form}>
+						<View style={{alignSelf: 'center'}}>
+							{ (showingDatePicker || Platform.OS === 'ios') && (
+									<DateTimePicker
+					        	style={[descriptionInput, {minWidth: 150}]}
+					          value={date}
+					          mode={'date'}
+					          display="default"
+					          onChange={onDateChange}
+					        />
+				        )
+							}
+							{ Platform.OS === 'android' && (
+									<DateTimeBadge 
+										style={descriptionInput} 
+										onPress={() => {isShowingDatePicker(!showingDatePicker)}}
+										mode='date'
+									>
+										{ date.getTime() }
+									</DateTimeBadge>
+								)
+							}
+			        </View>
+							<View  style={[imageDimensions]}>
+								{ images[0] != undefined ? (
 										<View>
-											<Image 
-												style={imageDimensions} 
-												source={　{uri: item.item}　} 
+											<FlatList
+												data={images}
+												renderItem={ item => (
+													<View>
+														<Image 
+															style={imageDimensions} 
+															source={　{uri: item.item}　} 
+														/>
+													</View>
+												)}
+												horizontal
 											/>
+											<TouchableOpacity 
+												onPress={onSelectImage} 
+												style={changingImageBtn}
+											>
+												<Text style={changingImageBtnTxt}>Change image(s)</Text>	
+											</TouchableOpacity>
 										</View>
-									)}
-									horizontal
-								/>
-								<TouchableOpacity 
-									onPress={onSelectImage} 
-									style={changingImageBtn}
-								>
-									<Text style={changingImageBtnTxt}>Change image(s)</Text>	
-								</TouchableOpacity>
+									): (
+										<TouchableOpacity style={[imageDimensions, imageInput]} onPress={onSelectImage}>
+											<Text style={selectImageTxt}>Select Image</Text>
+										</TouchableOpacity>
+									)
+								}
 							</View>
-						): (
-							<TouchableOpacity style={[imageDimensions, imageInput]} onPress={onSelectImage}>
-								<Text style={{textAlign: 'center'}}>Select Image</Text>
-							</TouchableOpacity>
-						)
-					}
+							{ (showingTimePicker || Platform.OS === 'ios') && (
+									<DateTimePicker
+					        	style={[descriptionInput, {maxWidth: iOSLocale === 'pt-BR' ? 65 : 90}]}
+					          value={date}
+					          mode={'time'}
+					          display="default"
+					          onChange={onDateChange}
+					        />
+				        )
+							}
+							{ Platform.OS === 'android' && (
+									<DateTimeBadge 
+										style={[descriptionInput]} 
+										onPress={() => {isShowingTimePicker(!showingTimePicker)}}
+										mode='time'
+									>
+										{ date.getTime() }
+									</DateTimeBadge>
+								)
+							}
+							<TextInput 
+								style={descriptionInput}
+								placeholder="Description" 
+								onChangeText={setDescription}
+								multiline
+							/>
+					<Button onPress={onSubmit} title="Done" />
 				</View>
-				{ (showingTimePicker || Platform.OS === 'ios') && (
-						<DateTimePicker
-		        	style={[descriptionInput, {maxWidth: iOSLocale === 'pt-BR' ? 65 : 90}]}
-		          value={date}
-		          mode={'time'}
-		          display="default"
-		          onChange={onDateChange}
-		        />
-	        )
-				}
-				{ Platform.OS === 'android' && (
-						<DateTimeBadge 
-							style={[descriptionInput]} 
-							onPress={() => {isShowingTimePicker(!showingTimePicker)}}
-							mode='time'
-						>
-							{ date.getTime() }
-						</DateTimeBadge>
-					)
-				}
-				<TextInput 
-					style={descriptionInput}
-					placeholder="Description" 
-					onChangeText={setDescription}
-					multiline
-				/>
-				<Button onPress={onSubmit} title="Done" />
-			</View>
-		</SafeAreaView>
+			</SafeAreaView>
+		</KeyboardAvoidingView>
 	);
 }
 
@@ -180,7 +185,7 @@ const styles = StyleSheet.create({
 
 	form: {
 		margin: 15,
-		backgroundColor: '#ededed',
+		backgroundColor: SURFACE_COLOR,
 		paddingHorizontal: 15
 	},
 
@@ -192,14 +197,16 @@ const styles = StyleSheet.create({
 
 	imageInput: {
 		borderWidth: 1, 
-		justifyContent: 'center'
+		justifyContent: 'center',
+		borderColor: CONTRAST_COLOR
 	},
 
 	descriptionInput: {
 		marginTop: 15,
 		marginBottom: 15,
 		padding: 0,
-		fontSize: 16
+		fontSize: 16,
+		color: CONTRAST_COLOR
 	},
 
 	changingImageBtn: {
@@ -217,5 +224,10 @@ const styles = StyleSheet.create({
 		color: 'white',
 		fontWeight: 'bold',
 		fontSize: 16
+	},
+
+	selectImageTxt: {
+		textAlign: 'center',
+		color: CONTRAST_COLOR
 	}
 });

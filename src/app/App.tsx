@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Platform
 } from 'react-native';
+import { Appearance } from 'react-native';
 import { Navigation, Layout } from 'react-native-navigation';
 
 import Meals from '../meals/MealsContainer';

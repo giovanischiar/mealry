@@ -11,6 +11,7 @@ import {
 	Image
 } from 'react-native';
 
+import { CONTRAST_COLOR } from '../res/theme';
 import { Meal } from './MealsInterfaces';
 
 export const MealItem = ({meal, collapsed}: {meal: Meal, collapsed: boolean}) => {
@@ -54,7 +55,7 @@ const DateItem : FunctionComponent = ({children}) => {
 	const dateNumber = Number(dateString);
 	const convertedDate = new Date(dateNumber);
 	const convertedLocalizedDate = convertedDate.toLocaleTimeString();
-	return <Text>{ convertedLocalizedDate }</Text>
+	return <Text style={{color: CONTRAST_COLOR}}>{ convertedLocalizedDate }</Text>
 }
 
 const Photo = ({address, collapsed}: {address: string, collapsed: boolean}) => {
@@ -82,12 +83,14 @@ const styles = StyleSheet.create({
 
 	description: {
 		marginStart: 15,
-		marginTop: 15
+		marginTop: 15,
+		color: CONTRAST_COLOR
 	},
 
 	resumedDescription: {
 		margin: 0, 
 		textAlign: 'center', 
-		maxWidth: 374 * 0.25
+		maxWidth: 374 * 0.25,
+		color: CONTRAST_COLOR
 	}
 });

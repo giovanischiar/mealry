@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, FlatList, ListRenderItem, Text, TouchableOpacity, ListRenderItemInfo } from 'react-native';
 
+import { SURFACE_COLOR, CONTRAST_COLOR } from '../res/theme';
 import { DayMeal } from './MealsInterfaces';
 import { MealItem } from './MealItem';
 
@@ -15,7 +16,7 @@ const Meal = ({dayMeal}: {dayMeal: DayMeal}) => {
 	return (
 		<View style={dayWrapper}>
 			<TouchableOpacity onPress={collapse} style={day}>
-				<Text>{!collapsed ? "\\/" : ">"}</Text>
+				<Text style={{color: CONTRAST_COLOR}}>{!collapsed ? "\\/" : ">"}</Text>
 				<Text style={dayDate}>{new Date(dayMeal.day).toLocaleDateString()}</Text>
 			</TouchableOpacity>
 			<FlatList
@@ -41,7 +42,7 @@ export const MealList = (props: {dayMeals: DayMeal[]}) => {
 
 const styles = StyleSheet.create({
 	dayWrapper: {
-		backgroundColor: '#ededed',
+		backgroundColor: SURFACE_COLOR,
 		paddingBottom: 15
 	},
 
@@ -51,14 +52,14 @@ const styles = StyleSheet.create({
 		overflow: 'hidden',
 		alignItems: 'center',
 		padding: 15,
-		backgroundColor: '#ededed'
+		backgroundColor: SURFACE_COLOR
 	},
 
 	dayDate: {
 		fontSize: 16,
 		fontWeight: 'bold',
 		borderRadius: 5,
-		color: 'black',
+		color: CONTRAST_COLOR,
 		marginLeft: 15
 	},
 
