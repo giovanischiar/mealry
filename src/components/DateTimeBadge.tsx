@@ -25,7 +25,8 @@ export const DateTimeBadge : FunctionComponent<{onPress: () => void, mode: 'date
 const styles = StyleSheet.create({
 	wrapper: {
 		backgroundColor: '#ddd',
-		borderRadius: 7
+		borderRadius: 7,
+		alignSelf: 'flex-start'
 	},
 
 	dateText: {

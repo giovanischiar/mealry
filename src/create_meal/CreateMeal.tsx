@@ -11,7 +11,8 @@ import {
 	Image,
 	FlatList,
 	Dimensions,
-	Platform 
+	Platform,
+	NativeModules 
 } from 'react-native';
 import { Navigation, Layout } from 'react-native-navigation';
 import { launchImageLibrary } from 'react-native-image-picker';
@@ -21,10 +22,12 @@ import { DateTimeBadge } from '../components/DateTimeBadge';
 import { Meal } from '../meals/MealsInterfaces';
 
 export const CreateMeal = (props: {addMeal: (date: number, images: string[], description: string) => {}}) => {
-	const [showingDateDicker, isShowingDatePicker] = useState(false);
+	const [showingDatePicker, isShowingDatePicker] = useState(false);
+	const [showingTimePicker, isShowingTimePicker] = useState(false);
 	const [description, setDescription] = useState('');
 	const [images, setImages] = useState([] as string[]);
 	const [date, setDate] = useState(new Date(Date.now()));
+
 	const { 
 		screen, 
 		form, 
@@ -35,6 +38,11 @@ export const CreateMeal = (props: {addMeal: (date: number, images: string[], des
 		changingImageBtnTxt 
 	} = styles;
 
+	let iOSLocale = "pt_BR";
+	if (Platform.OS === 'ios') {
+		iOSLocale = NativeModules.SettingsManager.settings.AppleLocale || NativeModules.SettingsManager.settings.AppleLanguages[0];
+	}
+
 	const onSelectImage = async () => {
 		const result = await launchImageLibrary({mediaType: 'photo', selectionLimit: 0, includeExtra: true});
 		if (result != undefined && result.assets) {
@@ -44,8 +52,6 @@ export const CreateMeal = (props: {addMeal: (date: number, images: string[], des
 			console.log(new Date(dayStamp));
 			setDate(jsCoreDateCreator(dayStamp));
 		}
-
-		console.log(result);
 	}
 
 	const onSubmit = () => {
@@ -55,6 +61,7 @@ export const CreateMeal = (props: {addMeal: (date: number, images: string[], des
 	}
 
 	const jsCoreDateCreator = (dateString: string): Date => { 
+
 		const newDateString = dateString.replace('T', ' ');
 	  // dateString *HAS* to be in this format "YYYY-MM-DD HH:MM:SS" 
 	  let dateParam = newDateString.split (/[\s-:]/)  
@@ -63,18 +70,16 @@ export const CreateMeal = (props: {addMeal: (date: number, images: string[], des
 	}
 
 	const onDateChange = (event: any, date: Date | undefined) => {
-		console.log('yay'); 
-		console.log('onChange', event, date); 
-		const newDateString = date ? date.toString() : new Date(Date.now()).toString();
-		setDate(jsCoreDateCreator(newDateString));
+		setDate(date ? date : new Date(Date.now()));
 		isShowingDatePicker(false);
+		isShowingTimePicker(false);
 	}
 
 	return (
 		<SafeAreaView style={screen}>
 			<View style={form}>
 				<View style={{alignSelf: 'center'}}>
-				{ (showingDateDicker || Platform.OS === 'ios') && (
+				{ (showingDatePicker || Platform.OS === 'ios') && (
 						<DateTimePicker
 		        	style={[descriptionInput, {minWidth: 150}]}
 		          value={date}
@@ -87,7 +92,7 @@ export const CreateMeal = (props: {addMeal: (date: number, images: string[], des
 				{ Platform.OS === 'android' && (
 						<DateTimeBadge 
 							style={descriptionInput} 
-							onPress={() => {isShowingDatePicker(!showingDateDicker)}}
+							onPress={() => {isShowingDatePicker(!showingDatePicker)}}
 							mode='date'
 						>
 							{ date.getTime() }
@@ -124,13 +129,26 @@ export const CreateMeal = (props: {addMeal: (date: number, images: string[], des
 						)
 					}
 				</View>
-{/*        <DateTimePicker
-        	style={[descriptionInput, {minWidth: 65, alignSelf: 'flex-start'}]}
-          value={date}
-          mode={'time'}
-          display="default"
-          onChange={time => {}}
-        />*/}
+				{ (showingTimePicker || Platform.OS === 'ios') && (
+						<DateTimePicker
+		        	style={[descriptionInput, {maxWidth: iOSLocale === 'pt-BR' ? 65 : 90}]}
+		          value={date}
+		          mode={'time'}
+		          display="default"
+		          onChange={onDateChange}
+		        />
+	        )
+				}
+				{ Platform.OS === 'android' && (
+						<DateTimeBadge 
+							style={[descriptionInput]} 
+							onPress={() => {isShowingTimePicker(!showingTimePicker)}}
+							mode='time'
+						>
+							{ date.getTime() }
+						</DateTimeBadge>
+					)
+				}
 				<TextInput 
 					style={descriptionInput}
 					placeholder="Description" 

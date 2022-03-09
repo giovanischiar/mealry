@@ -4,7 +4,8 @@ import {
   View,
   StyleSheet,
   Text,
-  TouchableOpacity
+  TouchableOpacity,
+  Platform
 } from 'react-native';
 import { Navigation, Layout } from 'react-native-navigation';
 
@@ -27,7 +28,7 @@ const openCreateMeal = async () => {
 
 export const AddMealsButton = () => (
   <TouchableOpacity onPress={openCreateMeal}>
-    <Text style={{fontSize: 20, color: 'white', fontWeight: 'bold'}}>+</Text>
+    <Text style={{fontSize: 20, color: 'white', fontWeight: 'bold', marginRight: Platform.OS === 'android' ? 15 : 0}}>+</Text>
   </TouchableOpacity>
 );
 

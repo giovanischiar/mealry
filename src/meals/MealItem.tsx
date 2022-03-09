@@ -53,10 +53,7 @@ const DateItem : FunctionComponent = ({children}) => {
 	const dateString = children ? children.toString() : "0"
 	const dateNumber = Number(dateString);
 	const convertedDate = new Date(dateNumber);
-	const convertedLocalizedDate = convertedDate.toLocaleString(
-		'pt-BR', 
-		{hour: 'numeric', minute: 'numeric'}
-	);
+	const convertedLocalizedDate = convertedDate.toLocaleTimeString();
 	return <Text>{ convertedLocalizedDate }</Text>
 }
 
