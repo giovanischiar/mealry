@@ -1,13 +1,22 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, FlatList, ListRenderItem, Text, TouchableOpacity, ListRenderItemInfo } from 'react-native';
+import { 
+	StyleSheet, 
+	View, 
+	FlatList, 
+	ListRenderItem, 
+	Text, 
+	TouchableOpacity, 
+	ListRenderItemInfo 
+} from 'react-native';
+import { Navigation } from 'react-native-navigation';
 
 import { SURFACE_COLOR, CONTRAST_COLOR } from '../res/theme';
-import { DayMeal } from './MealsInterfaces';
+import { DayMeal, Meal as MealData } from './MealsInterfaces';
 import { MealItem } from './MealItem';
 
 let isCollapsed = false;
 
-const Meal = ({dayMeal}: {dayMeal: DayMeal}) => {
+const Meal = ({dayMeal, onPressMeal}: {dayMeal: DayMeal, onPressMeal: (meal: MealData) => void}) => {
 	const [collapsed, isCollapsed] = useState(true);
 	const collapse = () => {
 		isCollapsed(!collapsed);
@@ -19,26 +28,39 @@ const Meal = ({dayMeal}: {dayMeal: DayMeal}) => {
 				<Text style={{color: CONTRAST_COLOR}}>{!collapsed ? "\\/" : ">"}</Text>
 				<Text style={dayDate}>{new Date(dayMeal.day).toLocaleDateString()}</Text>
 			</TouchableOpacity>
-			<FlatList
+			<FlatList<MealData>
 				data={dayMeal.meals}
-				renderItem={meal => <MealItem meal={meal.item} collapsed={collapsed}/>}
+				renderItem={meal => (
+					<MealItem meal={meal.item} collapsed={collapsed} onPress={() => {onPressMeal(meal.item); openCreateMeal(meal.item)}}/>
+				)}
 				ItemSeparatorComponent={() => <View style={separator}/>}
 				horizontal={collapsed}
 			/>
 		</View>
-	)
+	);
 }
 
-export const MealList = (props: {dayMeals: DayMeal[]}) => {
+const openCreateMeal = async (currentMeal: MealData) => {
+  const opts = {
+    component: {
+      name: 'CreateMeal',
+      passProps: { currentMeal }
+    }
+  }
+
+  await Navigation.push('Meals', opts);
+}
+
+export const MealList = (props: {dayMeals: DayMeal[], onPressMeal: (meal: MealData) => void}) => {
 	const { separator } = styles;
 	return (
 		<FlatList<DayMeal>
 			data={props.dayMeals}
-			renderItem={item => <Meal dayMeal={item.item}/>}
+			renderItem={item => <Meal dayMeal={item.item} onPressMeal={props.onPressMeal}/>}
 			ItemSeparatorComponent={() => <View style={separator}/>}
 		/>
-	)
-};
+	);
+}
 
 const styles = StyleSheet.create({
 	dayWrapper: {

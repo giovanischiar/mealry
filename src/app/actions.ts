@@ -1,6 +1,7 @@
 import { ACTIONS } from './interfaces';
 import * as json from '../../resources/json/meals.json';
 import { store } from './routing';
+import { Meal } from '../meals/MealsInterfaces';
 
 export const loadMeals = () => {
 	return {type: ACTIONS.LOAD_MEALS, payload: json.meals}
@@ -20,6 +21,9 @@ export const addMeal = (date: number, images: string[], description: string) => 
 	if (!dayAlreadyRegistered) {
 		newDaymeals = [...newDaymeals, newDayMeal];
 	}
-	console.log(newDaymeals);
 	return {type: ACTIONS.LOAD_MEALS, payload: newDaymeals};
+}
+
+export const selectMeal = (meal: Meal) => {
+	return { type: ACTIONS.SELECT_MEAL, meal}
 }

@@ -2,11 +2,11 @@ import React from 'react';
 import { StyleSheet, SafeAreaView, Text, TouchableOpacity, View } from 'react-native';
 
 import { CONTRAST_COLOR } from '../res/theme';
-import { MealsProps } from './MealsInterfaces';
+import { MealsProps, Meal } from './MealsInterfaces';
 import { MealList } from './MealList';
 
 export const Meals = (props: MealsProps) => {
-	const { dayMeals, loadMeals } = props;
+	const { dayMeals, loadMeals, selectMeal } = props;
 	const { bar, screen, title } = styles;
 
 	return (
@@ -15,7 +15,10 @@ export const Meals = (props: MealsProps) => {
 				<Text style={title}>Click here to load the meals</Text>
 			</TouchableOpacity>
 			<View style={screen}>	
-				<MealList {...{dayMeals}}/>
+				<MealList 
+					dayMeals={dayMeals} 
+					onPressMeal={selectMeal}
+				/>
 			</View>
 		</SafeAreaView>
 	);

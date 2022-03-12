@@ -22,15 +22,14 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 
 import { SURFACE_COLOR, CONTRAST_COLOR } from '../res/theme';
 import { DateTimeBadge } from '../components/DateTimeBadge';
-import { Meal } from '../meals/MealsInterfaces';
+import { CreateMealsProps } from './CreateMealInterfaces';
 
-export const CreateMeal = (props: {addMeal: (date: number, images: string[], description: string) => {}}) => {
+export const CreateMeal = (props: CreateMealsProps) => {
 	const [showingDatePicker, isShowingDatePicker] = useState(false);
 	const [showingTimePicker, isShowingTimePicker] = useState(false);
-	const [description, setDescription] = useState('');
-	const [images, setImages] = useState([] as string[]);
-	const [date, setDate] = useState(new Date(Date.now()));
-
+	const [description, setDescription] = useState(props.currentMeal ? props.currentMeal.description : '');
+	const [images, setImages] = useState(props.currentMeal ? props.currentMeal.images : [] as string[]);
+	const [date, setDate] = useState(new Date(props.currentMeal ? props.currentMeal.date : Date.now()));
 	const { 
 		screen, 
 		form, 
@@ -47,19 +46,21 @@ export const CreateMeal = (props: {addMeal: (date: number, images: string[], des
 		iOSLocale = NativeModules.SettingsManager.settings.AppleLocale || NativeModules.SettingsManager.settings.AppleLanguages[0];
 	}
 
+	if (props.currentMeal) {
+		//TODO: set new header name if editing.
+	}
+
 	const onSelectImage = async () => {
 		const result = await launchImageLibrary({mediaType: 'photo', selectionLimit: 0, includeExtra: true});
 		if (result != undefined && result.assets) {
 			const images: string[] = result.assets.flatMap(item => item.uri ? item.uri : '');
 			const dayStamp = result.assets[0].timestamp ? result.assets[0].timestamp : ''
 			setImages(images);
-			console.log(new Date(dayStamp));
 			setDate(jsCoreDateCreator(dayStamp));
 		}
 	}
 
 	const onSubmit = () => {
-		console.log('date', date);
 		props.addMeal(date.getTime(), images, description)
 		Navigation.popToRoot(props.componentId);
 	}
@@ -154,6 +155,7 @@ export const CreateMeal = (props: {addMeal: (date: number, images: string[], des
 								)
 							}
 							<TextInput 
+								value={description}
 								style={descriptionInput}
 								placeholder="Description" 
 								onChangeText={setDescription}
@@ -168,12 +170,16 @@ export const CreateMeal = (props: {addMeal: (date: number, images: string[], des
 
 CreateMeal.options = {
   topBar: {
+  	background: {
+  		color: {
+  			light: '#4d089a',
+  			dark: '#000'
+  		}
+  	},
+
     title: {
       text: 'Create Meal',
       color: 'white'
-    },
-    background: {
-      color: '#4d089a'
     }
   }
 }

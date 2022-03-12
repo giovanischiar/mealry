@@ -14,25 +14,25 @@ import {
 import { CONTRAST_COLOR } from '../res/theme';
 import { Meal } from './MealsInterfaces';
 
-export const MealItem = ({meal, collapsed}: {meal: Meal, collapsed: boolean}) => {
-	return !collapsed ? <MealItemUncollapsed meal={meal}/> : <MealItemCollapsed meal={meal}/>
-}
+export const MealItem = ({meal, collapsed, onPress}: {meal: Meal, collapsed: boolean, onPress: () => void}) => (
+	<TouchableOpacity onPress={onPress}>
+		{ !collapsed ? <MealItemUncollapsed meal={meal}/> : <MealItemCollapsed meal={meal}/> }
+	</TouchableOpacity>
+)
 
 export const MealItemUncollapsed = ({meal}: {meal: Meal}) => {
 	const { mealWrapper, date, imageSeparator, description } = styles;
 	return (
-		<View>
-			<View style={mealWrapper}>
-				<View style={date}><DateItem>{meal.date.toString()}</DateItem></View>
-				<FlatList<string>  
-					data={meal.images}
-					renderItem={item => <Photo address={item.item} collapsed={false}/>}
-					ItemSeparatorComponent={() => <View style={imageSeparator}/>}
-					horizontal
-					showsHorizontalScrollIndicator={false}
-				/>
-				<Text style={description}>{meal.description}</Text>
-			</View>
+		<View style={mealWrapper}>
+			<View style={date}><DateItem>{meal.date.toString()}</DateItem></View>
+			<FlatList<string>  
+				data={meal.images}
+				renderItem={item => <Photo address={item.item} collapsed={false}/>}
+				ItemSeparatorComponent={() => <View style={imageSeparator}/>}
+				horizontal
+				showsHorizontalScrollIndicator={false}
+			/>
+			<Text style={description}>{meal.description}</Text>
 		</View>
 	)
 }
