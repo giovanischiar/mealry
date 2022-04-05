@@ -60,8 +60,12 @@ export const CreateMeal: NavigationFunctionComponent<CreateMealsProps> = ({compo
 	}
 
 	const onSubmit = () => {
-		props.addMeal(date.getTime(), images, description)
-		Navigation.popToRoot(props.componentId);
+		let id = ""
+		if (currentMeal) {
+			id = currentMeal.id;
+		}
+		addMeal(id, date.getTime(), images, description)
+		Navigation.popToRoot(componentId);
 	}
 
 	const jsCoreDateCreator = (dateString: string): Date => { 
