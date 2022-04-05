@@ -7,29 +7,28 @@ import {
 	TextInput, 
 	Button, 
 	TouchableOpacity, 
-	Alert, 
 	Image,
 	FlatList,
 	Dimensions,
 	Platform,
 	NativeModules, 
 	KeyboardAvoidingView,
-	ScrollView
 } from 'react-native';
-import { Navigation, Layout } from 'react-native-navigation';
+import { Navigation } from 'react-native-navigation';
 import { launchImageLibrary } from 'react-native-image-picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { NavigationFunctionComponent } from 'react-native-navigation';
 
 import { SURFACE_COLOR, CONTRAST_COLOR } from '../res/theme';
 import { DateTimeBadge } from '../components/DateTimeBadge';
 import { CreateMealsProps } from './CreateMealInterfaces';
 
-export const CreateMeal = (props: CreateMealsProps) => {
+export const CreateMeal: NavigationFunctionComponent<CreateMealsProps> = ({componentId, currentMeal, addMeal}) => {
 	const [showingDatePicker, isShowingDatePicker] = useState(false);
 	const [showingTimePicker, isShowingTimePicker] = useState(false);
-	const [description, setDescription] = useState(props.currentMeal ? props.currentMeal.description : '');
-	const [images, setImages] = useState(props.currentMeal ? props.currentMeal.images : [] as string[]);
-	const [date, setDate] = useState(new Date(props.currentMeal ? props.currentMeal.date : Date.now()));
+	const [description, setDescription] = useState(currentMeal ? currentMeal.description : '');
+	const [images, setImages] = useState(currentMeal ? currentMeal.images : [] as string[]);
+	const [date, setDate] = useState(new Date(currentMeal ? currentMeal.date : Date.now()));
 	const { 
 		screen, 
 		form, 
@@ -46,7 +45,7 @@ export const CreateMeal = (props: CreateMealsProps) => {
 		iOSLocale = NativeModules.SettingsManager.settings.AppleLocale || NativeModules.SettingsManager.settings.AppleLanguages[0];
 	}
 
-	if (props.currentMeal) {
+	if (currentMeal) {
 		//TODO: set new header name if editing.
 	}
 
@@ -68,9 +67,21 @@ export const CreateMeal = (props: CreateMealsProps) => {
 	const jsCoreDateCreator = (dateString: string): Date => { 
 		const newDateString = dateString.replace('T', ' ');
 	  // dateString *HAS* to be in this format "YYYY-MM-DD HH:MM:SS" 
-	  let dateParam = newDateString.split (/[\s-:]/)  
-	  dateParam[1] = (parseInt(dateParam[1], 10) - 1).toString()  
-	  return new Date(...dateParam)
+  	let dateParam = newDateString.split (/[\s-:]/);
+  	console.log('dateParam', dateParam);
+  	if (dateParam.length >= 7) {
+  		dateParam[1] = (parseInt(dateParam[1], 10) - 1).toString();
+  		const dateParamNumber = dateParam.map(value => Number(value));
+  		console.log('dateParamNumber', dateParamNumber);
+  		return new Date(dateParamNumber[0], 
+  										dateParamNumber[1], 
+  										dateParamNumber[2], 
+  										dateParamNumber[3], 
+  										dateParamNumber[4], 
+  										dateParamNumber[5], 
+  										dateParamNumber[6]);
+  	}
+  	return new Date(Date.now());
 	}
 
 	const onDateChange = (event: any, date: Date | undefined) => {
@@ -80,7 +91,7 @@ export const CreateMeal = (props: CreateMealsProps) => {
 	}
 
 	return (
-			<KeyboardAvoidingView style={{flex: 1}} behavior={Platform.OS === "ios" ? "padding" : null}>
+			<KeyboardAvoidingView style={{flex: 1}} behavior={Platform.OS === "ios" ? "padding" : undefined}>
 				<SafeAreaView style={screen}>
 					<View style={form}>
 						<View style={{alignSelf: 'center'}}>

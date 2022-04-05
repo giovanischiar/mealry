@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { StyleSheet, SafeAreaView, Text, TouchableOpacity, View } from 'react-native';
 
 import { CONTRAST_COLOR } from '../res/theme';
@@ -25,8 +25,7 @@ export const Meals = (props: MealsProps) => {
 };
 
 const styles = StyleSheet.create({
-	bar: {
-	},
+	bar: {},
 
 	screen: {
 		flex: 1
