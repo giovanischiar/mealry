@@ -32,13 +32,17 @@ export const addMeal = (id: string, date: number, images: string[], description:
 					const newMeal = newDayMeal.meals[0]
 					if (newDayMeal.day !== dayMeal.day) {
 						dateWasChanged = true;
-						newDaymeals[i].meals = [...newDaymeals[i].meals.slice(0, j), ...newDaymeals[i].meals.slice(j+1, newDaymeals[i].meals.length)];
+						newDaymeals[i].meals = [...newDaymeals[i].meals.slice(0, j), ...newDaymeals[i].meals.slice(j+1, newDaymeals[i].meals.length)].sort((m1, m2) => {
+							return m1.date - m2.date;
+						});
 						if (newDaymeals[i].meals.length === 0) {
 							dayMealEmpty = i
 						}
 						break;
 					}
-					newDaymeals[i].meals = [...newDaymeals[i].meals.slice(0, j), newMeal, ...newDaymeals[i].meals.slice(j+1, newDaymeals[i].meals.length)];
+					newDaymeals[i].meals = [...newDaymeals[i].meals.slice(0, j), newMeal, ...newDaymeals[i].meals.slice(j+1, newDaymeals[i].meals.length)].sort((m1, m2) => {
+						return m1.date - m2.date;
+					});
 				}
 			}
 		}
@@ -48,7 +52,9 @@ export const addMeal = (id: string, date: number, images: string[], description:
 		let dayAlreadyRegistered = false;
 		for (var i = 0; i < dayMeals.length; i++) {
 			if (daysSinceEpoch(dayMeals[i].day) === daysSinceEpoch(newDayMeal.day)) {
-				newDaymeals[i].meals = [...dayMeals[i].meals, ...newDayMeal.meals];
+				newDaymeals[i].meals = [...dayMeals[i].meals, ...newDayMeal.meals].sort((m1, m2) => {
+					return m1.date - m2.date;
+				});
 				dayAlreadyRegistered = true;
 			}
 		}
@@ -59,7 +65,7 @@ export const addMeal = (id: string, date: number, images: string[], description:
 	if (dayMealEmpty !== -1) {
 		newDaymeals = [...newDaymeals.slice(0, dayMealEmpty), ...newDaymeals.slice(dayMealEmpty+1, newDaymeals.length)];
 	}
-	return {type: ACTIONS.LOAD_MEALS, payload: newDaymeals};
+	return {type: ACTIONS.LOAD_MEALS, payload: newDaymeals.sort((dm1, dm2) => { return dm1.day - dm2.day; })};
 }
 
 export const selectMeal = (meal: Meal) => {
