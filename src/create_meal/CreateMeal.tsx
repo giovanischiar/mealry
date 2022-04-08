@@ -13,6 +13,7 @@ import {
 	Platform,
 	NativeModules, 
 	KeyboardAvoidingView,
+	Alert
 } from 'react-native';
 import { Navigation } from 'react-native-navigation';
 import { launchImageLibrary } from 'react-native-image-picker';
@@ -49,13 +50,30 @@ export const CreateMeal: NavigationFunctionComponent<CreateMealsProps> = ({compo
 		//TODO: set new header name if editing.
 	}
 
+  const alertt = async () => new Promise(resolve => {
+    Alert.alert(
+      "",
+      "Change date and time to match the first image?",
+      [
+        {
+          text: "Yes",
+          onPress: () => resolve(true),
+          style: "cancel"
+        },
+        { text: "No", onPress: () => resolve(false) }
+      ]
+    );
+  });
+
 	const onSelectImage = async () => {
 		const result = await launchImageLibrary({mediaType: 'photo', selectionLimit: 0, includeExtra: true});
 		if (result != undefined && result.assets) {
 			const images: string[] = result.assets.flatMap(item => item.uri ? item.uri : '');
 			const dayStamp = result.assets[0].timestamp ? result.assets[0].timestamp : ''
 			setImages(images);
-			setDate(jsCoreDateCreator(dayStamp));
+			if (await alertt()) {
+				setDate(jsCoreDateCreator(dayStamp));
+			}
 		}
 	}
 
